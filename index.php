@@ -64,19 +64,19 @@ $hotels = [
 </head>
 
 <body>
-  <div class="container my-5 d-flex justify-content-center ">
+  <div class="container my-5 d-flex justify-content-center flex-wrap">
 
-    <div class="card" style="width: 18rem;">
-      <ul class="list-group list-group-flush">
-        <?php foreach ($hotels as $hotel) : ?>
+    <?php foreach ($hotels as $hotel) : ?>
+      <div class="card m-3" style="width: 18rem;">
+        <ul class="list-group list-group-flush ">
           <li class="list-group-item"><?php echo "Nome: " . $hotel['name']; ?></li>
           <li class="list-group-item"><?php echo "Informazioni: " . $hotel['description']; ?></li>
           <li class="list-group-item"><?php echo $hotel['parking'] ? "Parcheggio: Si" : "Parcheggio: No"; ?></li>
           <li class="list-group-item"><?php echo "Voto: " . $hotel['vote']; ?></li>
-          <li class="list-group-item"><?php "Distanza dal centro: " . $hotel['distance_to_center'] . " Km"; ?></li>
-        <?php endforeach ?>
-      </ul>
-    </div>
+          <li class="list-group-item"><?php echo "Distanza dal centro: " . $hotel['distance_to_center'] . " Km"; ?></li>
+        </ul>
+      </div>
+    <?php endforeach ?>
 
   </div>
 
