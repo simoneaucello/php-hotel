@@ -40,8 +40,10 @@ $hotels = [
 
 ];
 
-$parcheggio = isset($_GET['parcheggio']) ? $_GET['parcheggio'] : 'all';
-$voto = isset($_GET['voto']) ? $_GET['voto'] : 'all';
+$parcheggio = $_GET['parcheggio'];
+$voto = $_GET['voto'];
+// $getParking = $parcheggio === 'all' || ($parcheggio === 'true' && $hotels['parking']) || ($parcheggio === 'false' && !$hotels['parking']);
+// $getVote = $voto === 'all' || ($voto === '1,2,3,4,5' && $hotels['vote']) || ($voto === 'false' && !$hotels['vote']);
 
 
 // foreach ($hotels as $hotel) {
@@ -71,20 +73,20 @@ $voto = isset($_GET['voto']) ? $_GET['voto'] : 'all';
     <div class="row">
       <div class="col-12">
         <form action="index.php" method="GET">
-          <label for="parcheggio">Filtra per parcheggio:</label>
-          <select class="form-control  mb-3" aria-label="Default select example" id="parcheggio" name="parcheggio">
-            <option value="all">Tutti</option>
+          <label for="parcheggio" class="form-label">Filtra per parcheggio:</label>
+          <select class="form-select mb-3" aria-label="Default select example" id="parcheggio" name="parcheggio">
+            <option value="">Tutti</option>
             <option value="true">Si</option>
             <option value="false">No</option>
           </select>
 
-          <label for="voto">Filtra per voto:</label>
-          <select class="form-control" aria-label="Default select example" id="voto" name="voto">
-            <option value="all">Tutti</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+          <label for="voto" class="form-label">Filtra per valutazione:</label>
+          <select class="form-select" aria-label="Default select example" id="voto" name="voto">
+            <option value="">Tutti</option>
+            <option value="1">1 o più</option>
+            <option value="2">2 o più</option>
+            <option value="3">3 o più</option>
+            <option value="4">4 o più</option>
             <option value="5">5</option>
           </select>
           <button type="submit" class="btn btn-primary mt-3">Filtra</button>
@@ -98,15 +100,17 @@ $voto = isset($_GET['voto']) ? $_GET['voto'] : 'all';
 
 
       <?php foreach ($hotels as $hotel) :  ?>
-        <div class="card m-3" style="width: 18rem;">
-          <ul class="list-group list-group-flush ">
-            <li class="list-group-item"><?php echo "Nome: " . $hotel['name']; ?></li>
-            <li class="list-group-item"><?php echo "Informazioni: " . $hotel['description']; ?></li>
-            <li class="list-group-item"><?php echo $hotel['parking'] ? "Parcheggio: Si" : "Parcheggio: No"; ?></li>
-            <li class="list-group-item"><?php echo "Voto: " . $hotel['vote']; ?></li>
-            <li class="list-group-item"><?php echo "Distanza dal centro: " . $hotel['distance_to_center'] . " Km"; ?></li>
-          </ul>
-        </div>
+        <?php if ((!isset($parcheggio) && !isset($voto)) || (empty($parcheggio) && empty($voto)) || (isset($parcheggio) && isset($voto) && (var_export($hotel['parking'], true) === $parcheggio || empty($parcheggio)) && (var_export($hotel['vote'], true) >= $voto || empty($voto)))) : ?>
+          <div class="card m-3" style="width: 18rem;">
+            <ul class="list-group list-group-flush ">
+              <li class="list-group-item"><?php echo "Nome: " . $hotel['name']; ?></li>
+              <li class="list-group-item"><?php echo "Informazioni: " . $hotel['description']; ?></li>
+              <li class="list-group-item"><?php echo $hotel['parking'] ? "Parcheggio: Si" : "Parcheggio: No"; ?></li>
+              <li class="list-group-item"><?php echo "Voto: " . $hotel['vote']; ?></li>
+              <li class="list-group-item"><?php echo "Distanza dal centro: " . $hotel['distance_to_center'] . " Km"; ?></li>
+            </ul>
+          </div>
+        <?php endif ?>
       <?php endforeach ?>
 
     </div>
